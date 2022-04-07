@@ -1,5 +1,5 @@
 #![allow(unused)]
-use std::sync::Arc;
+use std::sync::{Arc, Mutex};
 use std::thread;
 use std::time::Instant;
 
@@ -42,11 +42,12 @@ fn find_palingrams_concurrent(word_list: Vec<String>) -> Vec<(String, String)> {
         .chunks(word_list.len() / num_cpus::get())
         .map(|v| v.to_vec())
         .collect::<Vec<Vec<_>>>();
-    let mut handles = vec![];
+    let mut handles = Vec::with_capacity(chunks.len());
+    let palingram_list = Arc::new(Mutex::new(Vec::new()));
     for c in chunks {
         let source_word_list = word_list.clone();
+        let palingram_list = palingram_list.clone();
         handles.push(thread::spawn(move || {
-            let mut palingram_list = Vec::new();
             for word in c.iter() {
                 let word_len = word.len();
                 let word_reversed = word.chars().rev().collect::<String>();
@@ -56,26 +57,28 @@ fn find_palingrams_concurrent(word_list: Vec<String>) -> Vec<(String, String)> {
                             && source_word_list.contains(&word_reversed[word_len - i..].to_owned())
                         {
                             palingram_list
+                                .lock()
+                                .unwrap()
                                 .push((word.to_owned(), word_reversed[word_len - i..].to_owned()));
                         }
                         if word[..i] == word_reversed[word_len - i..]
                             && source_word_list.contains(&word_reversed[..word_len - i].to_owned())
                         {
                             palingram_list
+                                .lock()
+                                .unwrap()
                                 .push((word.to_owned(), word_reversed[..word_len - i].to_owned()));
                         }
                     }
                 }
             }
-            palingram_list
         }));
     }
-    let mut result = vec![];
     for h in handles {
-        let mut r = h.join().unwrap();
-        result.append(&mut r);
+        h.join().unwrap();
     }
-    result
+    let result = palingram_list.lock().unwrap();
+    result.to_vec()
 }
 
 fn main() {
@@ -84,7 +87,7 @@ fn main() {
     let result = find_palingrams_concurrent(word_list);
     // let result = find_palingrams(word_list);
     println!("{:?}", result);
-    println!("total = {}", result.len());
+    println!("total palingrams = {}", result.len());
     let duration = start.elapsed();
     println!("Runtime for this program was: {:?}", duration);
 }
