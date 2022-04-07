@@ -1,0 +1,15 @@
+[package]
+name = "palingrams_cpython"
+version = "0.1.0"
+edition = "2018"
+
+[lib]
+name = "palingrams_cpython"
+crate-type = ["cdylib"]
+
+[dependencies]
+palingrams_rs = {path = "../palingrams_rs"}
+
+[dependencies.cpython]
+version = "0.7"
+features = ["extension-module"]
