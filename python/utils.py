@@ -10,8 +10,6 @@ def load_file(file_path):
         print(f"{e}\nError opening {file_path}", file=sys.stderr)
         sys.exit(1)
 
-source_word_list = load_file('./words.txt')
-
 def split_list_to_chunks(l, n):
     for i in range(0, len(l), n): 
         yield l[i:i + n]
