@@ -1,2 +1,2 @@
 [workspace]
-members = ["palingrams_rs", "palingrams_cpython"]
+members = ["palingrams_rs", "palingrams_cpython", "palingrams_pyo3"]

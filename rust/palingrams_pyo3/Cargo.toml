@@ -1,0 +1,12 @@
+[package]
+name = "palingrams_pyo3"
+version = "0.1.0"
+edition = "2018"
+
+[lib]
+name = "palingrams_pyo3"
+crate-type = ["cdylib"]
+
+[dependencies]
+palingrams_rs = {path = "../palingrams_rs" }
+pyo3 = {version = "0.16.3", features = ["extension-module"]}
