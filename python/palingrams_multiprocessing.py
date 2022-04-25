@@ -1,3 +1,4 @@
+from itertools import chain
 from math import ceil 
 from multiprocessing import Pool
 import os
@@ -25,6 +26,8 @@ if __name__ == '__main__':
 	chunk_size = ceil(len(source_word_list) / os.cpu_count()) 
 	chunks = list(utils.split_list_to_chunks(source_word_list, chunk_size))
 	start_time = time.time()
+	palingrams = None
 	with Pool(os.cpu_count()) as p:
-		print(p.map(find_palingrams, chunks))
+		palingrams = list(chain.from_iterable(p.map(find_palingrams, chunks)))
 	print(f"Runtime for this program was: {time.time() - start_time} s")
+	print(f"result count = {len(palingrams)}")
