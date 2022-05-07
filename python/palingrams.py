@@ -22,6 +22,6 @@ if __name__ == "__main__":
     start_time = time.time()
     palingrams = find_palingrams(w)
     end_time = time.time()
-    print(palingrams)
+    # print(palingrams)
     print(f"Runtime for this program was: {end_time - start_time} s")
     print(f"result count = {len(palingrams)}")

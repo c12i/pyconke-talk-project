@@ -29,5 +29,6 @@ if __name__ == '__main__':
 	palingrams = None
 	with Pool(os.cpu_count()) as p:
 		palingrams = list(chain.from_iterable(p.map(find_palingrams, chunks)))
+    # print(palingrams)
 	print(f"Runtime for this program was: {time.time() - start_time} s")
 	print(f"result count = {len(palingrams)}")

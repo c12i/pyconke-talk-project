@@ -29,6 +29,6 @@ if __name__ == '__main__':
 	with concurrent.futures.ThreadPoolExecutor(max_workers=os.cpu_count()) as executor:
 		futures = [executor.submit(find_palingrams, c) for c in chunks]
 		palingram_list = list(chain.from_iterable([f.result() for f in futures]))
-	print(palingram_list)
+	# print(palingram_list)
 	print(f"Runtime for this program was: {time.time() - start_time} s")
 	print(f"result count = {len(palingram_list)}")
